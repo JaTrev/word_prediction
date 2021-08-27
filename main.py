@@ -1,5 +1,5 @@
 from app import page_configuration, introduction, main_body, side_bar, results_field, get_user_input
-from word_prediction import load_model, encode, do_predictions
+from word_prediction import load_model, do_predictions
 
 if __name__ == '__main__':
     page_configuration()

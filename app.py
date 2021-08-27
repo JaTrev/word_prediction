@@ -89,7 +89,7 @@ def main_body():
     markdown_text(body_text, TextTypes.Text)
 
 
-def prediction_field():
+def get_user_input():
     text = "Type a few words and press enter to get suggestions"
     markdown_text(text, text_class=TextTypes.Subchapter)
 
@@ -103,12 +103,18 @@ def side_bar():
         side_bar_text = "Number of Predictions"
         markdown_text(side_bar_text, TextTypes.Subchapter)
 
-        num_of_predictions = st.slider("", min_value=1, max_value=7)
+        num_of_predictions = st.slider("", min_value=1, max_value=7, value=3)
 
     return num_of_predictions
 
 
+def results_field(words: list):
+    col1, col2 = st.columns(2)
 
+    markdown_text("".join(words), TextTypes.Warning)
 
+    with col1:
+        markdown_text("First", text_class=TextTypes.Chapter)
 
-
+    with col2:
+        markdown_text("Second", text_class=TextTypes.Chapter)

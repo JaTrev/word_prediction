@@ -108,7 +108,7 @@ def get_user_input():
     text = "Type a few words and press enter to get suggestions"
     markdown_text(text, text_class=TextTypes.Subchapter)
 
-    return st.text_input("", max_chars=100)
+    return st.text_input("", max_chars=100, value="Default value")
 
 
 def side_bar():

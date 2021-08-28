@@ -75,6 +75,10 @@ def do_predictions(model, tokenizer, text_sentence, top_k_words):
     """
 
     text_sentence += ' <mask>'
+
+    print("text_sentence")
+    print(text_sentence)
+    print()
     input_ids, mask_idx = encode(tokenizer, text_sentence)
 
     with torch.no_grad():

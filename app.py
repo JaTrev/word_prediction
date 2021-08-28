@@ -24,37 +24,37 @@ def markdown_text(text: str, text_class: TextTypes = TextTypes.Text):
 
 
 def page_configuration():
-    st.set_page_config("NLP Word Prediction", layout="centered", initial_sidebar_state="expanded")
+    st.set_page_config("NLP Language Modeling", layout="centered", initial_sidebar_state="expanded")
 
     text_chapter = """<style>.chapter {
-                        font-size:40px ;font-family: 'Cooper Black'; color: grey;} 
+                        font-size:40px ;} 
                         </style>
                         """
     st.markdown(text_chapter, unsafe_allow_html=True)
 
     text_subchapter = """
                             <style>.subchapter {
-                            font-size:30px ;font-family: 'Cooper Black'; color: grey;} 
+                            font-size:30px ;} 
                             </style>
                             """
     st.markdown(text_subchapter, unsafe_allow_html=True)
 
     title_font = """
                    <style>.title {
-                   font-size:50px ; font-family: 'Cooper Black'; color: #FF9633;} 
+                   font-size:50px ;} 
                    </style>
                    """
     st.markdown(title_font, unsafe_allow_html=True)
 
     text_font = """
                     <style>.text {
-                     font-family: 'Cooper Black'; color: black;} 
+                     } 
                     </style>
                     """
 
     error_font = """
                         <style>.warning {
-                         font-family: 'Cooper Black'; color: red;} 
+                        color: red;} 
                         </style>
                         """
     st.markdown(error_font, unsafe_allow_html=True)
@@ -63,7 +63,7 @@ def page_configuration():
     page_style = """
             <style>
             /* This is to hide hamburger menu completely */
-            #MainMenu {visibility: hidden;}
+            MainMenu {visibility: hidden;}
 
             /* This is to hide Streamlit footer */
             footer {visibility: hidden;}
@@ -75,17 +75,32 @@ def introduction():
 
     markdown_text("NLP Word Prediction", TextTypes.Title)
 
-    intro_text = 'This project looks at the word prediction task of NLP.'
+    intro_text = 'Language Modeling (also called Next Word Prediction) is the task of predicting what word comes next ' \
+                 'and is a fundamental task of NLP. It is used daily when autocompleting a message.'
     markdown_text(intro_text, TextTypes.Text)
 
-    # todo: missing a picture
+    _, col_mid, _ = st.columns([1, 6, 1])
+
+    with col_mid:
+        st.markdown(
+            f"""
+            <div align="center">
+                <img src="https://media.arxiv-vanity.com/render-output/5515933/x1.png" width="400">
+                <p > Next word prediction is often used when texting. 
+                <a href="https://arxiv.org/abs/1811.03604">[Hard, et al., 2018]</a></p>
+        
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 
-def main_body():
-    body_title = 'Main Body Title'
+def main_body(number_of_words: int = 5):
+    body_title = 'How this project works'
     markdown_text(body_title, TextTypes.Chapter)
 
-    body_text = 'reason for the project and intro to word intrusion task'
+    body_text = f'Start the phrase in the left input field. The following deep learning models will predict ' \
+                f'{number_of_words} possible next words.'
     markdown_text(body_text, TextTypes.Text)
 
 
@@ -100,21 +115,24 @@ def side_bar():
 
     with st.sidebar:
 
+        side_bar_title = "Next Word Prediction"
+        markdown_text(side_bar_title, TextTypes.Subchapter)
+
         side_bar_text = "Number of Predictions"
-        markdown_text(side_bar_text, TextTypes.Subchapter)
+        num_of_predictions = st.slider(side_bar_text, min_value=1, max_value=7, value=3)
 
-        num_of_predictions = st.slider("", min_value=1, max_value=7, value=3)
+        side_bar_input_text = "Type a few words and press enter."
+        user_input = st.text_input(side_bar_input_text, max_chars=100)
 
-    return num_of_predictions
+    return num_of_predictions, user_input
 
 
-def results_field(words: list):
-    col1, col2 = st.columns(2)
-
-    markdown_text("".join(words), TextTypes.Warning)
+def results_field(prediction_dict: dict):
+    col1, col2 = st.columns([1, 1])
 
     with col1:
-        markdown_text("First", text_class=TextTypes.Chapter)
+        markdown_text("Bert", text_class=TextTypes.Chapter)
+        markdown_text(" ".join(prediction_dict["bert"]), text_class=TextTypes.Text)
 
     with col2:
-        markdown_text("Second", text_class=TextTypes.Chapter)
+        markdown_text("Other", text_class=TextTypes.Chapter)

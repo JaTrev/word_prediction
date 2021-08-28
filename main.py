@@ -4,15 +4,13 @@ from word_prediction import load_model, do_predictions
 if __name__ == '__main__':
     page_configuration()
 
-    introduction()
-
-    main_body()
-
-    num_of_predictions = side_bar()
-
     tokenizer, model = load_model("bert")
 
-    user_input = get_user_input()
+    introduction()
+
+    num_of_predictions, user_input = side_bar()
+
+    main_body(num_of_predictions)
 
     if user_input:
 

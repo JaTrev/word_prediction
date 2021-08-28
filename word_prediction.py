@@ -1,8 +1,10 @@
 from transformers import BertTokenizer, BertForMaskedLM
 import torch
 import string
+import streamlit as st
 
 
+@st.cache
 def load_model(model_name: str = 'bert'):
     """
     load_model loads the tokenizer and model
@@ -20,6 +22,7 @@ def load_model(model_name: str = 'bert'):
     return tokenizer, model
 
 
+@st.cache
 def decode(tokenizer, pred_idxs):
     """
     decode is used to translate the translate the ids to tokens
@@ -38,6 +41,7 @@ def decode(tokenizer, pred_idxs):
     return tokens
 
 
+@st.cache
 def encode(tokenizer, text_sentence, add_special_tokens=True):
     """
     encode is uses to translate the input into indices
@@ -59,6 +63,7 @@ def encode(tokenizer, text_sentence, add_special_tokens=True):
     return input_ids, mask_idx
 
 
+@st.cache(allow_output_mutation=True)
 def do_predictions(model, tokenizer, text_sentence, top_k_words):
     """
     do_predictions predicts the next word for the input sentence
@@ -77,4 +82,4 @@ def do_predictions(model, tokenizer, text_sentence, top_k_words):
 
     words = decode(tokenizer,
                    predict[0, mask_idx, :].topk(top_k_words).indices.tolist())
-    return words
+    return {"bert": words}

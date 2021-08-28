@@ -77,11 +77,10 @@ def do_predictions(model, tokenizer, text_sentence, top_k_words):
     text_sentence = "Hello my"
     text_sentence += ' <mask>'
 
-    input_ids, mask_idx = encode(tokenizer, text_sentence)
+    # input_ids, mask_idx = encode(tokenizer, text_sentence)
 
-    with torch.no_grad():
-        predict = model(input_ids)[0]
+    # with torch.no_grad():
+    #     predict = model(input_ids)[0]
 
-    words = decode(tokenizer,
-                   predict[0, mask_idx, :].topk(top_k_words).indices.tolist())
-    return words
+    # words = decode(tokenizer, predict[0, mask_idx, :].topk(top_k_words).indices.tolist())
+    return {"bert": ["this", "is a", "test"]}

@@ -16,5 +16,4 @@ if __name__ == '__main__':
 
         top_prediction_words = do_predictions(model, tokenizer, user_input, num_of_predictions)
 
-
         results_field(top_prediction_words)

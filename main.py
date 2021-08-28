@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     main_body(num_of_predictions)
 
-    if user_input:
+    if len(user_input):
 
         top_prediction_words = do_predictions(model, tokenizer, user_input, num_of_predictions)
 

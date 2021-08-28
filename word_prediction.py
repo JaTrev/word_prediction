@@ -82,4 +82,4 @@ def do_predictions(model, tokenizer, text_sentence, top_k_words):
 
     words = decode(tokenizer,
                    predict[0, mask_idx, :].topk(top_k_words).indices.tolist())
-    return {"bert": words}
+    return words

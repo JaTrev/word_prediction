@@ -1,25 +1,26 @@
-from transformers import BertTokenizer, BertForMaskedLM
+from transformers import BertTokenizer, BertForMaskedLM, DistilBertTokenizer, DistilBertForMaskedLM
 import torch
 import string
 import streamlit as st
 
 
 @st.cache
-def load_model(model_name: str = 'bert'):
+def load_model():
     """
     load_model loads the tokenizer and model
-
-    :param model_name: name of the model
 
     :return:
     """
 
-    assert model_name.lower() == "bert"
+    model_name = "bert-base-uncased"
+    bert_tokenizer = BertTokenizer.from_pretrained(model_name)
+    bert_model = BertForMaskedLM.from_pretrained(model_name).eval()
 
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    model = BertForMaskedLM.from_pretrained('bert-base-uncased').eval()
+    model_name = "distilbert-base-uncased"
+    distil_tokenizer = DistilBertTokenizer.from_pretrained(model_name)
+    distil_model = DistilBertForMaskedLM.from_pretrained(model_name).eval()
 
-    return tokenizer, model
+    return bert_tokenizer, bert_model, distil_tokenizer, distil_model
 
 
 @st.cache
@@ -64,13 +65,12 @@ def encode(tokenizer, text_sentence, add_special_tokens=True):
 
 
 @st.cache(allow_output_mutation=True)
-def do_predictions(model, tokenizer, text_sentence, top_k_words):
+def do_predictions(model, tokenizer, text_sentence, max_top_k_words=10):
     """
     do_predictions predicts the next word for the input sentence
     :param model: transformer model
     :param tokenizer: tokenizer used for encoding and decoding
     :param text_sentence: input sentence on which the prediction is based
-    :param top_k_words: number of predictions
     :return:
     """
 
@@ -82,5 +82,6 @@ def do_predictions(model, tokenizer, text_sentence, top_k_words):
     # with torch.no_grad():
     #     predict = model(input_ids)[0]
 
-    # words = decode(tokenizer, predict[0, mask_idx, :].topk(top_k_words).indices.tolist())
-    return {"bert": ["this", "is a", "test"]}
+    # words = decode(tokenizer, predict[0, mask_idx, :].topk(max_top_k_words).indices.tolist())
+
+    return ["this", "is", "a", "test"]

@@ -75,7 +75,7 @@ def introduction():
 
     markdown_text("NLP Word Prediction", TextTypes.Title)
 
-    intro_text = 'Language Modeling (also called Next Word Prediction) is the task of predicting what word comes next ' \
+    intro_text = 'Language Modeling (also called Next Word Prediction) is the task of predicting what word comes next '\
                  'and is a fundamental task of NLP. It is used daily when autocompleting a message.'
     markdown_text(intro_text, TextTypes.Text)
 
@@ -95,13 +95,26 @@ def introduction():
         )
 
 
-def main_body(number_of_words: int = 5):
+def main_body(user_input: str, number_of_words: int = 5):
     body_title = 'How this project works'
     markdown_text(body_title, TextTypes.Chapter)
 
     body_text = f'Start the phrase in the left input field. The following deep learning models will predict ' \
                 f'{number_of_words} possible next words.'
     markdown_text(body_text, TextTypes.Text)
+
+    body_text = f'Predicting next word for: '
+    markdown_text(body_text, TextTypes.Text)
+
+    st.markdown(
+       f"""
+                <div align="center">
+                
+                     {user_input} 
+                </div>
+                """,
+        unsafe_allow_html=True
+    )
 
 
 def get_user_input():
@@ -127,12 +140,20 @@ def side_bar():
     return num_of_predictions, user_input
 
 
-def results_field(prediction_dict: dict):
+def results_field(user_input: str, prediction_dict: dict, num_of_predictions: int):
     col1, col2 = st.columns([1, 1])
 
     with col1:
         markdown_text("Bert", text_class=TextTypes.Chapter)
-        markdown_text(" ".join(prediction_dict["bert"]), text_class=TextTypes.Text)
+
+        for w in prediction_dict["bert"][:num_of_predictions]:
+
+            text = f"""{user_input} <b> {w} </b> """
+            markdown_text(text, text_class=TextTypes.Text)
 
     with col2:
-        markdown_text("Other", text_class=TextTypes.Chapter)
+        markdown_text("DistilBert", text_class=TextTypes.Chapter)
+
+        for w in prediction_dict["distilbert"][:num_of_predictions]:
+            text = f"""{user_input} <b> {w} </b> """
+            markdown_text(text, text_class=TextTypes.Text)
